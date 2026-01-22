@@ -14,8 +14,37 @@
   <body>
     <header class="bbc-header">
       <div class="container">
-        <div class="logo">
-          B2 <span>- Check Level English Intermediate</span>
+        <div class="logo"><span>Check Level English</span></div>
+
+        <div class="level-selector-buttons">
+          <button
+            onclick="canviarNivell('basic')"
+            id="btn-basic"
+            class="lvl-btn"
+          >
+            BASIC
+          </button>
+          <button
+            onclick="canviarNivell('essential')"
+            id="btn-essential"
+            class="lvl-btn"
+          >
+            ESSENTIAL
+          </button>
+          <button
+            onclick="canviarNivell('intermediate')"
+            id="btn-intermediate"
+            class="lvl-btn"
+          >
+            INTERMEDIATE
+          </button>
+          <button
+            onclick="canviarNivell('advanced')"
+            id="btn-advanced"
+            class="lvl-btn"
+          >
+            ADVANCED
+          </button>
         </div>
       </div>
     </header>
@@ -56,6 +85,8 @@
       </section>
     </main>
 
+    <script src="dades basic.js"></script>
+    <script src="dades essencial.js"></script>
     <script src="dades.js"></script>
     <script src="script.js"></script>
   </body>

@@ -1,36 +1,132 @@
-let historic = JSON.parse(localStorage.getItem("angles_historic")) || [];
-let indexActual = parseInt(localStorage.getItem("angles_index_actual")) || 0;
+let nivellActual =
+  localStorage.getItem("angles_nivell_actiu") || "intermediate";
+let historic =
+  JSON.parse(localStorage.getItem(`historic_${nivellActual}`)) || [];
+let indexActual = parseInt(localStorage.getItem(`index_${nivellActual}`)) || 0;
 let preguntesFiltrades = [];
-let dadesReals = null;
+let diccionariUnitats = null; // Ara és un contenidor buit que omplirem
+let estructuraTemesActual = []; // Ara és un contenidor buit que omplirem
+let dadesReals = null; // Ara és un contenidor buit que omplirem
 let filtreTemporalActual = "all";
 
-const estructuraTemes = [
-  { titol: "Present and past", rang: [1, 6] },
-  { titol: "Present perfect and past", rang: [7, 18] },
-  { titol: "Future", rang: [19, 25] },
-  { titol: "Modals", rang: [26, 37] },
-  { titol: "if and wish", rang: [38, 41] },
-  { titol: "Passive", rang: [42, 46] },
-  { titol: "Reported speech", rang: [47, 48] },
-  { titol: "Questions and auxiliary verbs", rang: [49, 52] },
-  { titol: "-ing and to ...", rang: [53, 68] },
-  { titol: "Articles and nouns", rang: [69, 81] },
-  { titol: "Pronouns and determiners", rang: [82, 91] },
-  { titol: "Relative clauses", rang: [92, 97] },
-  { titol: "Adjectives and adverbs", rang: [98, 112] },
-  { titol: "Conjunctions and prepositions", rang: [113, 120] },
-  { titol: "Prepositions", rang: [121, 136] },
-  { titol: "Phrasal verbs", rang: [137, 145] },
-];
+// 2. CONFIGURACIÓ PER NIVELLS (Dades, Diccionaris i Rangs)
+const configuracioNivells = {
+  basic: {
+    dades: typeof dades_basic !== "undefined" ? dades_basic : null,
+    diccionari:
+      typeof diccionariUnitats_basic !== "undefined"
+        ? diccionariUnitats_basic
+        : null,
+    temes: [
+      { titol: "Present", rang: [1, 9] },
+      { titol: "Past", rang: [10, 15] },
+      { titol: "Present Perfect", rang: [16, 19] },
+      { titol: "Passive", rang: [20, 21] },
+      { titol: "Verbs Forms", rang: [22, 23] },
+      { titol: "Future", rang: [24, 26] },
+      { titol: "Modals, imperative, etc.", rang: [27, 34] },
+      { titol: "There and it", rang: [35, 37] },
+      { titol: "Auxiliar Verbs", rang: [38, 41] },
+      { titol: "Questions", rang: [42, 47] },
+      { titol: "Reported Speech", rang: [48, 48] },
+      { titol: "-ing and do", rang: [49, 52] },
+      { titol: "get, do, make, and have", rang: [53, 56] },
+      { titol: "Pronouns and possessives", rang: [57, 62] },
+      { titol: "A and the", rang: [63, 71] },
+      { titol: "Determiners and pronouns", rang: [72, 82] },
+      { titol: "Adjectives and adverbs", rang: [83, 90] },
+      { titol: "Word order", rang: [91, 94] },
+      { titol: "Conjunctions and clauses", rang: [95, 96] },
+      { titol: "Prepositions", rang: [101, 111] },
+      { titol: "Phrasal verbs", rang: [112, 113] },
+      // ... afegeix aquí els rangs segons el llibre Basic
+    ],
+  },
+  essential: {
+    dades: typeof dades_essencial !== "undefined" ? dades_essencial : null,
+    diccionari:
+      typeof diccionariUnitats_essencial !== "undefined"
+        ? diccionariUnitats_essencial
+        : null,
+    temes: [
+      { titol: "Present", rang: [1, 9] },
+      { titol: "Past", rang: [10, 14] },
+      { titol: "Present Perfect", rang: [15, 20] },
+      { titol: "Passive", rang: [21, 22] },
+      { titol: "Verb forms", rang: [23, 24] },
+      { titol: "Future", rang: [25, 28] },
+      { titol: "Modals, imperative...etc.", rang: [29, 36] },
+      { titol: "There and it", rang: [37, 39] },
+      { titol: "Auxiliary verbs", rang: [40, 43] },
+      { titol: "Questions", rang: [44, 49] },
+      { titol: "Reported speech", rang: [50, 50] },
+      { titol: "-ing and to...", rang: [51, 54] },
+      { titol: "Go, get, do, make and have", rang: [55, 58] },
+      { titol: "Pronouns and possessives", rang: [59, 64] },
+      { titol: "A and the", rang: [65, 73] },
+      { titol: "Determiners and pronouns", rang: [74, 84] },
+      { titol: "Adjectives and adverbs", rang: [85, 92] },
+      { titol: "Word order", rang: [93, 96] },
+      { titol: "Conjunctions and clauses", rang: [97, 102] },
+      { titol: "Prepositions", rang: [103, 113] },
+      { titol: "Phrasal verbs", rang: [114, 115] },
+      // ... afegeix aquí els rangs segons el llibre Essential
+    ],
+  },
+  intermediate: {
+    dades: typeof dadesApp !== "undefined" ? dadesApp : null,
+    diccionari:
+      typeof diccionariUnitats_intermediate !== "undefined"
+        ? diccionariUnitats_intermediate
+        : typeof diccionariUnitats !== "undefined"
+          ? diccionariUnitats
+          : null,
+    temes: [
+      { titol: "Present and past", rang: [1, 6] },
+      { titol: "Present perfect and past", rang: [7, 18] },
+      { titol: "Future", rang: [19, 25] },
+      { titol: "Modals", rang: [26, 37] },
+      { titol: "if and wish", rang: [38, 41] },
+      { titol: "Passive", rang: [42, 46] },
+      { titol: "Reported speech", rang: [47, 48] },
+      { titol: "Questions and auxiliary verbs", rang: [49, 52] },
+      { titol: "-ing and to ...", rang: [53, 68] },
+      { titol: "Articles and nouns", rang: [69, 81] },
+      { titol: "Pronouns and determiners", rang: [82, 91] },
+      { titol: "Relative clauses", rang: [92, 97] },
+      { titol: "Adjectives and adverbs", rang: [98, 112] },
+      { titol: "Conjunctions and prepositions", rang: [113, 120] },
+      { titol: "Prepositions", rang: [121, 136] },
+      { titol: "Phrasal verbs", rang: [137, 145] },
+    ],
+  },
+};
 
 // 1. INICIALITZACIÓ SEGURA
 function inicialitzarDades() {
-  if (typeof dadesApp !== "undefined") dadesReals = dadesApp;
-  else if (typeof dades !== "undefined") dadesReals = { issues: dades };
+  const config = configuracioNivells[nivellActual];
 
-  if (!dadesReals) return;
+  if (!config || !config.dades) {
+    console.error(
+      "No s'han pogut carregar les dades pel nivell:",
+      nivellActual,
+    );
+    // Si falla, intentem tornar a l'intermediate per seguretat
+    if (nivellActual !== "intermediate") {
+      nivellActual = "intermediate";
+      inicialitzarDades();
+    }
+    return;
+  }
 
-  // Crear llista plana per navegació universal
+  // Assignem les dades del nivell a les variables de treball (let)
+  dadesReals = config.dades;
+  diccionariUnitats = config.diccionari;
+  estructuraTemesActual = config.temes;
+
+  actualitzarBotonsNivell();
+
+  // Preparem la llista de preguntes
   preguntesFiltrades = [];
   dadesReals.issues.forEach((issue) => {
     issue.preguntes.forEach((q) => {
@@ -38,8 +134,20 @@ function inicialitzarDades() {
     });
   });
 
-  // Forçar arrencada a la vista Study
   canviarVista("PRACTICE");
+}
+// Funció nova per gestionar el canvi
+function canviarNivell(nouNivell) {
+  if (nivellActual === nouNivell) return;
+  localStorage.setItem("angles_nivell_actiu", nouNivell);
+  location.reload(); // Recarreguem per aplicar els canvis de dades
+}
+
+function actualitzarBotonsNivell() {
+  document.querySelectorAll(".lvl-btn").forEach((btn) => {
+    btn.classList.remove("active");
+    if (btn.id === `btn-${nivellActual}`) btn.classList.add("active");
+  });
 }
 
 // 2. NAVEGACIÓ SENSE BLOQUEIG
@@ -83,7 +191,7 @@ function dibuixarPregunta() {
   if (!q) return;
 
   const estat = obtenirEstatRepas(q.id);
-  localStorage.setItem("angles_index_actual", indexActual);
+  localStorage.setItem(`index_${nivellActual}`, indexActual);
 
   // Preparem els buits: si ja està feta avui, mostrem la resposta o un check
   const buits = q.solucions
@@ -158,7 +266,7 @@ function validar(id) {
     data: new Date().toISOString(),
     unitats: q.unitats,
   });
-  localStorage.setItem("angles_historic", JSON.stringify(historic));
+  localStorage.setItem(`historic_${nivellActual}`, JSON.stringify(historic));
 
   if (esCorrecte) setTimeout(() => canviarPregunta(1), 2000);
 }
@@ -231,7 +339,7 @@ function generarInformeEvolucio() {
         </div>
         <div class="themes-container">`;
 
-  estructuraTemes.forEach((tema) => {
+  estructuraTemesActual.forEach((tema) => {
     // Filtrem quines unitats del diccionari cauen dins d'aquest tema
     const unitatsDelTema = Object.keys(diccionariUnitats)
       .map(Number)

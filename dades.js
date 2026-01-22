@@ -1,6 +1,6 @@
 // Fitxer: dades.js
 // 1. DICCIONARI COMPLET D'UNITATS (Extret del fitxer)
-const diccionariUnitats = {
+const diccionariUnitats_intermediate = {
   1: "Present continuous (I am doing)",
   2: "Present simple (I do)",
   3: "Present continuous and present simple 1 (I am doing and I do)",

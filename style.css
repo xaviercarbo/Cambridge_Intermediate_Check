@@ -761,3 +761,51 @@ button.control-btn:hover {
   background: #ffebee;
   transform: translateY(1px);
 }
+
+/* Contenidor de botons dins del header */
+.level-selector-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.lvl-btn {
+  flex: 1;
+  max-width: 120px;
+  padding: 8px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.65rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1); /* Transparent blanquinós */
+  color: white;
+  transition: all 0.2s;
+}
+
+.lvl-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Estil quan el botó està actiu (Cambridge Colors) */
+#btn-basic.active {
+  background: #e53935;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+#btn-essential.active {
+  background: #fb8c00;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+#btn-intermediate.active {
+  background: #1a73e8;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+#btn-advanced.active {
+  background: #2e7d32;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
